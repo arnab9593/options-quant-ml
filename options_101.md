@@ -33,3 +33,18 @@ Terminology:
 	10. Queue Priority: The way electronic exchange determine who is first in line to do a trade. A common method that is used to 					  determine who's first in the line is the price time priority method.
 						
 
+	11. Order Types:
+		1. Immediate or Cancel(order): Type of order that requires all or part of the order to be executed immediately. Unfilled parts of order are cancelled. 
+		Example: 100 bid for 24 contracts in the marketplace, an ioc order to sell 50 of these at a of 100(ioc). Sold 24 at 100 remaining 26 cancelled. The order will only alive to execute with any price at or above your offer, for a quantity up to size. 
+
+		2. Good for Day (GFD): A type of order that will remain active until executed (in part or full) or until the end of the trading day. Then cancelled. 
+
+		3. Good Till Cancelled (GTC): Type of order that will remain active until completed or cancelled. 
+
+		4. All or None (AON): An order that must be executed in its entirety or not executed at all. 
+
+		5. Fill or Kill (FOK): This order executed immediately in its entirety, otherwise order is cancelled. 
+
+		6. One cancels the other (OCO): When one order or market is executed, the other order is automatically cancelled. 
+
+		
