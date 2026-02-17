@@ -69,6 +69,29 @@ class OptionsQuantEngine:
         payoffs = np.maximum(avg_prices - K, 0)
         return np.exp(-self.r * T) * np.mean(payoffs)
 
+    def plot_iv_smile(self, ticker_symbol):
+        try:
+            ticker = yf.Ticker(ticker_symbol)
+            exp = ticker.options[0]
+            opt_chain = ticker.option_chain(exp)
+            calls = opt_chain.calls
+            
+            calls = calls[calls['impliedVolatility'] > 0.001]
+            
+            plt.figure(figsize=(10, 5))
+            plt.plot(calls['strike'], calls['impliedVolatility'], marker='o', color='purple', label='IV Smile')
+            
+            plt.title(f"Volatility Smile: {ticker_symbol} ({exp})")
+            plt.xlabel("Strike Price")
+            plt.ylabel("Implied Volatility")
+            plt.grid(True, alpha=0.3)
+            plt.legend()
+            
+            logger.info(f"iv smile for {ticker_symbol}...")
+            plt.show()
+        except Exception as e:
+            logger.error(f"could not generate iv smile: {e}")
+
     def plot_delta_analysis(self, ticker, S, K, sigma, T, opt_price, greeks):
         """s-curve with a results summary overlay"""
         S_range = np.linspace(S * 0.8, S * 1.2, 100)
