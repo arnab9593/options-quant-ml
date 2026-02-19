@@ -92,8 +92,22 @@ class OptionsQuantEngine:
         except Exception as e:
             logger.error(f"could not generate iv smile: {e}")
 
+    def plot_price_trajectories(self, ticker, paths):
+        plt.figure(figsize=(10, 6))
+        plt.plot(paths[:100].T, lw=1, alpha=0.15, color='gray') 
+        
+        plt.plot(paths.mean(axis=0), color='blue', lw=3, label='Expected (Mean) Path')
+        
+        plt.title(f"MCS on 10,000 price trajectories for {ticker}")
+        plt.xlabel("Time Steps")
+        plt.ylabel("Stock Price ($)")
+        plt.legend()
+        plt.grid(True, alpha=0.3)
+        
+        logger.info(f"price trajectories for {ticker}")
+        plt.show()
+
     def plot_delta_analysis(self, ticker, S, K, sigma, T, opt_price, greeks):
-        """s-curve with a results summary overlay"""
         S_range = np.linspace(S * 0.8, S * 1.2, 100)
         deltas = [delta('c', s, K, T, self.r, sigma) for s in S_range]
         plt.figure(figsize=(12, 7))
@@ -135,6 +149,7 @@ if __name__ == "__main__":
 
     if s_price:
         expiry_years = 30 / 365
+        engine.plot_price_trajectories(TICKER, paths)
         opt_price, greeks = engine.calculate_metrics('c', s_price, k_strike, expiry_years, iv)
         asian_price = engine.asian_call_price(s_price, k_strike, expiry_years, iv)
 
